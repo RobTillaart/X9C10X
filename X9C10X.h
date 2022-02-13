@@ -33,7 +33,7 @@ public:
 
   //  current resistance in ohm.
   //  Q: rounding needed?
-  uint32_t getOhm() { return _ohm * _position / 99; };
+  uint32_t getOhm() { return (_ohm * _position) / 99; };
   // misc
   uint32_t getMaxOhm() { return _ohm; };
 
