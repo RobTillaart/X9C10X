@@ -114,8 +114,8 @@ unittest(test_getOhm)
 
   for (uint8_t pos = 0; pos < 100; pos += 9)
   {
+    fprintf(stderr, "VALUE: %d %d Ω\n", pos, dp0.getOhm());
     dp0.incr();
-    fprintf(stderr, "VALUE: %d Ω\n", dp0.getOhm());
   }
 
 }
