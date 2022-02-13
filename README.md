@@ -36,10 +36,12 @@ The library keeps cache of the position.
 
 Use **\#include "X9C10X.h"**
 
-- **X9C10X(uint32_t ohm = 10000)** Constructor, default initializes the resistance to 10000 Ω. To calibrate one can fill in any other value e.g. 9950 Ω.
+- **X9C10X(uint32_t ohm = 10000)** Constructor, default initializes the resistance to 10000 Ω. 
+To calibrate one can fill in any other value e.g. 9950 Ω.
 - **void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin, uint8_t position = 0)** 
 sets the pins used by the device, and resets the position (default to 0).
-The position parameter allows to start the device with a previous stored position. Use this position with care.
+The position parameter allows to start the device with a previous stored position. 
+Use this position with care.
 
 Note: **begin()** has a hard coded 500uS delay so the device can wake up.
 
@@ -59,9 +61,13 @@ The returned value does depend on the value passed in the constructor.
 
 Warning: use with care.
 
-- **uint8_t store()** stores the current position in the NVRAM of the device, and returns the current position so it can later be used as position parameter for **begin()**. 
+- **uint8_t store()** stores the current position in the NVRAM of the device, 
+and returns the current position so it can later be used as position parameter for **begin()**. 
 
-If one uses an incorrect parameter position in **begin()** the internal state and the device will probably be out of sync. One way to sync is call **begin()** with the right parameters. The other way is to call **setPosition(0)** followed by **setPosition(99)** (or vice versa) to get a defined internal state.
+If one uses an incorrect parameter position in **begin()** the internal state and the device 
+will probably be out of sync. One way to sync is call **begin()** with the right parameters. 
+The other way is to call **setPosition(0)** followed by **setPosition(99)** (or vice versa) 
+to get a defined internal state.
 
 
 ## derived classes 
@@ -81,7 +87,6 @@ These classes have the same interface as the base class.
 No hardware to test yet.
 
 
-
 ## Operation
 
 See examples.
@@ -91,7 +96,9 @@ See examples.
 
 - buy and test different versions of the hardware
 - test different platform
+- test performance
 - documentation
 - optimize **setPosition()**
 - do we need the hardcoded 500us delay in **begin()**?
+- do we need **getType()**
 

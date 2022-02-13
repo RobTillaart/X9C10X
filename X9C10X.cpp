@@ -17,6 +17,9 @@
 #define X9C10X_DELAYMICROS          1
 #endif
 
+#define X9C10X_UP                   HIGH
+#define X9C10X_DOWN                 LOW
+
 
 X9C10X::X9C10X(uint32_t ohm)
 {
@@ -39,7 +42,7 @@ void X9C10X::begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin, ui
   digitalWrite(_selectPin,    HIGH);
 
   //  wiper power up time. Page 5.
-  delayMicroseconds(500);  
+  delayMicroseconds(500);
 
   //  reset defined position.
   _position = position;
@@ -59,7 +62,7 @@ void X9C10X::incr()
 {
   if (_position >= 99) return;
   _position++;
-  _move(true);
+  _move(X9C10X_UP);
 }
 
 
@@ -67,7 +70,7 @@ void X9C10X::decr()
 {
   if (_position == 0) return;
   _position--;
-  _move(false);
+  _move(X9C10X_DOWN);
 }
 
 
@@ -86,9 +89,9 @@ uint8_t X9C10X::store()
 //
 //  PRIVATE
 //
-void X9C10X::_move(bool UP, uint8_t steps)
+void X9C10X::_move(uint8_t direction, uint8_t steps)
 {
-  digitalWrite(_directionPin, UP ? HIGH : LOW);
+  digitalWrite(_directionPin, direction);
   delayMicroseconds(3);  // Tdi  (page 5)
 
   //  _pulsePin starts default HIGH

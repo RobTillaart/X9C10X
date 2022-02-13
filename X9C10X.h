@@ -15,7 +15,7 @@
 class X9C10X
 {
 public:
-  //  ohm can be actual measured value e.g 9950 ohm (calibration) 
+  //  ohm can be actual measured value e.g 9950 ohm (calibration)
   X9C10X(uint32_t ohm = 10000);
 
   void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin, uint8_t position = 0);
@@ -28,13 +28,17 @@ public:
   void     incr();
   void     decr();
 
+  //  use with care
   uint8_t  store();
 
   //  current resistance in ohm.
+  //  Q: rounding needed?
   uint32_t getOhm() { return _ohm * _position / 99; };
-
   // misc
   uint32_t getMaxOhm() { return _ohm; };
+
+  //  Q: needed?
+  uint16_t getType() { _type; };
 
 
 protected:
@@ -46,7 +50,7 @@ protected:
   uint8_t  _position;
   uint16_t _type = 0;   // needed?
 
-  void     _move(bool UP, uint8_t steps = 1);
+  void     _move(uint8_t direction, uint8_t steps = 1);
 };
 
 

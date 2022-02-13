@@ -86,7 +86,7 @@ unittest(test_position)
 unittest(test_incr_decr)
 {
   X9C10X dp0;
-  
+
   dp0.begin(7, 8, 9);
   assertEqual(0, dp0.getPosition());
 
@@ -108,14 +108,14 @@ unittest(test_incr_decr)
 unittest(test_getOhm)
 {
   X9C10X dp0;
-  
+
   dp0.begin(7, 8, 9);
   assertEqual(0, dp0.getPosition());
 
   for (uint8_t pos = 0; pos < 100; pos += 9)
   {
     dp0.incr();
-    fprintf(stderr, "VALUE: %d Ω\n", dp0.getOhm()););
+    fprintf(stderr, "VALUE: %d Ω\n", dp0.getOhm());
   }
 
 }
