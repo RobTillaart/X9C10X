@@ -54,7 +54,7 @@ unittest(test_constructor)
   X9C102 x102;
   X9C103 x103;
   X9C104 x104;
-  X9C105 x503;
+  X9C503 x503;
 
   assertEqual(1000,   x102.getMaxOhm());
   assertEqual(10000,  x103.getMaxOhm());
