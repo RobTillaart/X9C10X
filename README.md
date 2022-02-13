@@ -101,4 +101,5 @@ See examples.
 - optimize **setPosition()**
 - do we need the hardcoded 500us delay in **begin()**?
 - do we need **getType()**
+- add error codes?
 

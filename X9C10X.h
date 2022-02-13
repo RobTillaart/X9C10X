@@ -38,7 +38,7 @@ public:
   uint32_t getMaxOhm() { return _ohm; };
 
   //  Q: needed?
-  uint16_t getType() { _type; };
+  uint16_t getType() { return _type; };
 
 
 protected:
