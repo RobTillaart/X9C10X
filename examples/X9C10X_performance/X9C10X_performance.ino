@@ -56,7 +56,7 @@ void setup()
 
   for (uint8_t i = 0; i < 100; i++)
   {
-    pot.increment();
+    pot.incr();
     Serial.print(i);
     Serial.print("\t");
     Serial.print(pot.getPosition());
@@ -67,7 +67,7 @@ void setup()
 
   for (uint8_t i = 0; i < 100; i++)
   {
-    pot.decrement();
+    pot.decr();
     Serial.print(i);
     Serial.print("\t");
     Serial.print(pot.getPosition());
