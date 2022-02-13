@@ -79,7 +79,7 @@ unittest(test_position)
 
   X9C10X dp1;
   dp1.begin(7, 8, 9, 50);
-  assertEqual(50, dp0.getPosition());
+  assertEqual(50, dp1.getPosition());
 }
 
 
@@ -93,14 +93,14 @@ unittest(test_incr_decr)
   dp0.setPosition(0);
   for (uint8_t pos = 0; pos < 10; pos++)
   {
-    dp0.incr();
     assertEqual(pos, dp0.getPosition());
+    dp0.incr();
   }
 
   for (uint8_t pos = 0; pos < 5; pos++)
   {
+    assertEqual(10 - pos, dp0.getPosition());
     dp0.decr();
-    assertEqual(8 - pos, dp0.getPosition());
   }
 }
 
