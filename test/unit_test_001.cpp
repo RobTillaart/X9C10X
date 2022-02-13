@@ -111,6 +111,7 @@ unittest(test_getOhm)
 
   dp0.begin(7, 8, 9);
   assertEqual(0, dp0.getPosition());
+  assertEqual(10000, dp0.getMaxOhm());
 
   for (uint8_t pos = 0; pos < 100; pos += 9)
   {
