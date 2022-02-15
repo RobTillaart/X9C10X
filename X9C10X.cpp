@@ -4,6 +4,9 @@
 // VERSION: 0.1.0
 // PURPOSE: Arduino Library for X9C10X series digital potentiometer.
 //
+// HISTORY
+//  0.1.0  2022-01-26  initial version
+//  0.1.1  2022-02-15  improve conditional delay
 
 
 #include "X9C10X.h"
@@ -78,7 +81,9 @@ uint8_t X9C10X::store()
 {
   //  _pulsePin starts default HIGH
   digitalWrite(_selectPin, LOW);
-  if (X9C10X_DELAYMICROS > 0) delayMicroseconds(X9C10X_DELAYMICROS);
+  #if X9C10X_DELAYMICROS > 0
+  delayMicroseconds(X9C10X_DELAYMICROS);
+  #endif
   digitalWrite(_selectPin, HIGH);
   delay(20);    //  Tcph  page 5
   return _position;
@@ -99,9 +104,14 @@ void X9C10X::_move(uint8_t direction, uint8_t steps)
   while (steps--)
   {
     digitalWrite(_pulsePin, HIGH);
-    if (X9C10X_DELAYMICROS > 0) delayMicroseconds(X9C10X_DELAYMICROS);
+    #if X9C10X_DELAYMICROS > 0
+    delayMicroseconds(X9C10X_DELAYMICROS);
+    #endif
+
     digitalWrite(_pulsePin, LOW);
-    if (X9C10X_DELAYMICROS > 0) delayMicroseconds(X9C10X_DELAYMICROS);
+    #if X9C10X_DELAYMICROS > 0
+    delayMicroseconds(X9C10X_DELAYMICROS);
+    #endif
   }
   //  _pulsePin == LOW, (No Store, page 7)
   digitalWrite(_selectPin, HIGH);
