@@ -76,10 +76,6 @@ unittest(test_position)
     dp0.setPosition(pos);
     assertEqual(pos, dp0.getPosition());
   }
-
-  X9C10X dp1;
-  dp1.begin(7, 8, 9, 50);
-  assertEqual(50, dp1.getPosition());
 }
 
 
