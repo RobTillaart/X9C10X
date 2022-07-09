@@ -18,7 +18,7 @@ public:
   //  ohm can be actual measured value e.g 9950 ohm (calibration)
   X9C10X(uint32_t maxOhm = 10000);
 
-  void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin, uint8_t position = 0);
+  void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin);
 
   //  position = 0..99
   //  forced = true will ignore the cached position
@@ -50,8 +50,8 @@ protected:
   uint8_t  _selectPin;
 
   uint32_t _maxOhm;
-  uint8_t  _position;
-  uint16_t _type = 0;   // needed?
+  uint8_t  _position = 0;
+  uint16_t _type     = 0;
 
   void     _move(uint8_t direction, uint8_t steps = 1);
 };

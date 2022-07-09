@@ -13,6 +13,8 @@
 //  0.1.3  2022-02-22  add forced parameter to setPosition()
 //                     incr() and decr() return bool (made a step)
 //  0.2.0  2022-07-09  fix #7 incorrect signal during initialize
+//                     remove position parameter from begin()
+//                       to make setting position more explicit.
 //                     update readme
 //                     add uint8_t Ohm2Position()
 
@@ -42,14 +44,15 @@ X9C10X::X9C10X(uint32_t maxOhm)
 }
 
 
-void X9C10X::begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin, uint8_t position)
+void X9C10X::begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin)
 {
   _pulsePin     = pulsePin;
   _directionPin = directionPin;
   _selectPin    = selectPin;
 
   //  #7 order of the initialization does matter
-  //     as it might introduce an unwanted STORE pulse.  
+  //     as it might introduce an unwanted STORE pulse.
+  //     use of pull ups might be wise.  
   digitalWrite(_selectPin,    HIGH);
   digitalWrite(_pulsePin,     HIGH);
   digitalWrite(_directionPin, HIGH);
@@ -60,9 +63,6 @@ void X9C10X::begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin, ui
 
   //  wiper power up time. Page 5.
   delayMicroseconds(500);
-
-  //  reset defined position.
-  _position = position;
 }
 
 

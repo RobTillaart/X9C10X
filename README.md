@@ -13,7 +13,7 @@ Arduino Library for X9C10X series digital potentiometer.
 
 ## Description
 
-This experimental library provides a X9C10X base class and 
+This **experimental** library provides a X9C10X base class and 
 four derived classes for specific digital potentiometer.
 
 | type   | resistance | tested  |  notes       |
@@ -27,7 +27,22 @@ four derived classes for specific digital potentiometer.
 
 _Note: Ω Ohm sign = ALT-234_
 
-The library keeps cache of the position. 
+The library keeps track of the position of the potentiometer,
+but the user should set it with **setPosition(pos, true);**
+Otherwise the lib and device will probably not be in sync.  
+
+
+#### split the lib?
+
+It is possible that the library will split in the future in two versions.
+This needs a lot of thoughts and hands on.
+
+- a version that does not keep track of the internal position.
+This could become a very basic library without any feedback about position.
+Possibly this would become a base class?
+- a version (much like current one) that does keep track of the position.
+There are some conceptual / behaviour problems with keeping track of the
+position especially after restart.
 
 
 ### PINOUT
@@ -49,6 +64,11 @@ The library keeps cache of the position.
 //
 ```
 
+It is advised to use pull up resistors - e.g. 10 KΩ - on the CS, UD and INC line. 
+This will help the lines to start in a defined state and will
+improve the signal quality. 
+The pulses esp. INC can be quite short.
+
 
 ## Interface
 
@@ -59,10 +79,15 @@ Use **\#include "X9C10X.h"**
 
 - **X9C10X(uint32_t Ohm = 10000)** Constructor, default initializes the resistance to 10000 Ω. 
 To calibrate one can fill in any other value e.g. 9950 Ω.
-- **void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin, uint8_t position = 0)** 
-sets the pins used by the device, and resets the position (default to 0).
-The position parameter allows to start the device with a previous stored position. 
-Use this position with care.
+- **void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin)** 
+sets the pins used by the device.
+
+Note: **begin()** changed in 0.2.0 as the implicit parameter position
+was removed for the explicit function call to **setPosition()**.
+If **setPosition()** is not called, the device uses the last stored
+value as position. Unfortunately this cannot be read from the device.
+This will result in a mismatch between the internal position and the 
+external one.
 
 Note: **begin()** has a hard coded 500uS delay so the device can wake up.
 
@@ -72,14 +97,16 @@ This behaviour is similar to the SPI select pin.
 - **void setPosition(uint8_t position, bool forced = false)** sets the wiper 
 to a position between 0 and 99. 
 The movement is relative to the current (cached) position.
-If forced is set to true, the wiper will be moved to the closest end position and 
-from there moved to the requested position. 
-The cached position is ignored and the new position will be cached. 
-- **uint8_t getPosition()** returns the current position.
+If forced is set to true, the wiper will be moved to the closest "end" position 
+and from there moved to the requested position. 
+The internal position is replaced by the new position. 
+- **uint8_t getPosition()** returns the current (internal) position.
 - **bool incr()** moves one position up (if possible). 
-Returns true if moved and false if already at end position.
+Returns true if moved and false if already at end position
+according to internal position math.
 - **bool decr()** moves one position down (if possible).
-Returns true if moved and false if already at end position.
+Returns true if moved and false if already at end position
+according to internal position math.
 - **uint32_t getOhm()** returns the position expressed in Ohm.
 The returned value does depend on the value passed in the constructor.
 - **uint32_t getMaxOhm()** returns the maximum value ( =  parameter from constructor). 
@@ -90,17 +117,12 @@ If **invert == true** it uses the other wiper end as reference.
 
 #### Store 
 
-Warning: use with care.
+Warning: use with care (not tested).
 
 - **uint8_t store()** stores the current position in the NVRAM of the device, 
-and returns the current position so it can later be used as position parameter for **begin()**. 
+and returns the current position so it can later be used as position parameter for **setPosition()**. 
 
-Note: this function blocks for 20 milliseconds.
-
-If one uses an incorrect parameter position in **begin()** the internal state and the device 
-will probably be out of sync. One way to sync is call **begin()** with the right parameters. 
-The other way is to call **setPosition(0)** followed by **setPosition(99)** (or vice versa) 
-to get a defined internal state.
+Note: this **store()** function blocks for 20 milliseconds.
 
 
 #### Calibration
