@@ -1,7 +1,7 @@
 //
 //    FILE: X9C10X.cpp
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.1.3
+// VERSION: 0.2.0
 // PURPOSE: Arduino Library for X9C10X series digital potentiometer.
 //     URL: https://github.com/RobTillaart/X9C10X
 //
@@ -12,7 +12,9 @@
 //                     rounding in getOhm(), documentation
 //  0.1.3  2022-02-22  add forced parameter to setPosition()
 //                     incr() and decr() return bool (made a step)
-//
+//  0.2.0  2022-07-09  fix #7 incorrect signal during initialize
+//                     update readme
+//                     add uint8_t Ohm2Position()
 
 
 #include "X9C10X.h"
@@ -30,6 +32,10 @@
 #define X9C10X_DOWN                 LOW
 
 
+/////////////////////////////////////////////////////////
+//
+//  PUBLIC
+//
 X9C10X::X9C10X(uint32_t maxOhm)
 {
   _maxOhm = maxOhm;
@@ -42,16 +48,19 @@ void X9C10X::begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin, ui
   _directionPin = directionPin;
   _selectPin    = selectPin;
 
+  //  #7 order of the initialization does matter
+  //     as it might introduce an unwanted STORE pulse.  
+  digitalWrite(_selectPin,    HIGH);
+  digitalWrite(_pulsePin,     HIGH);
+  digitalWrite(_directionPin, HIGH);
+
   pinMode(_pulsePin, OUTPUT);
   pinMode(_directionPin, OUTPUT);
   pinMode(_selectPin, OUTPUT);
 
-  digitalWrite(_pulsePin,     HIGH);
-  digitalWrite(_directionPin, HIGH);
-  digitalWrite(_selectPin,    HIGH);
-
   //  wiper power up time. Page 5.
-  delayMicroseconds(500);
+  //  slightly more efficient than delayMicros()
+  while (micros() < 500);
 
   //  reset defined position.
   _position = position;
@@ -123,9 +132,32 @@ uint8_t X9C10X::store()
 }
 
 
-////////////////////////////////////////////////////////////////////
+//  rounding needed!
+uint32_t X9C10X::getOhm()
+{
+  return (_maxOhm * _position + 49) / 99;
+};
+
+
+uint32_t X9C10X::getMaxOhm()
+{
+  return _maxOhm;
+};
+
+
+//  rounding needed!
+uint8_t X9C10X::Ohm2Position(uint32_t value, bool invert)
+{
+  if (value > _maxOhm) return 99;
+  uint8_t val = (99 * value + _maxOhm/2) / _maxOhm;
+  if (invert) return 99 - val;
+  return val;
+}
+
+
+/////////////////////////////////////////////////////////
 //
-//  PRIVATE
+//  PROTECTED
 //
 void X9C10X::_move(uint8_t direction, uint8_t steps)
 {

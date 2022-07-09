@@ -17,6 +17,7 @@ decr	KEYWORD2
 
 getOhm	KEYWORD2
 getMaxOhm	KEYWORD2
+Ohm2Position	KEYWORD2
 
 store	KEYWORD2
 getType	KEYWORD2

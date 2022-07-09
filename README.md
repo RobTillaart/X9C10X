@@ -13,7 +13,8 @@ Arduino Library for X9C10X series digital potentiometer.
 
 ## Description
 
-This experimental library provides a X9C10X base class and four derived classes for specific digital potentiometer.
+This experimental library provides a X9C10X base class and 
+four derived classes for specific digital potentiometer.
 
 | type   | resistance | tested  |  notes       |
 |:------:|:----------:|:-------:|:-------------|
@@ -68,8 +69,12 @@ Note: **begin()** has a hard coded 500uS delay so the device can wake up.
 Note: multiple devices can be controlled, just by giving them an unique selectPin.
 This behaviour is similar to the SPI select pin.
 
-- **void setPosition(uint8_t position, bool forced = false)** sets the wiper to a position between 0 and 99. The movement is relative to the current (cached) position.
-If forced is set to true, the cached position is ignored and the new position will be cached. 
+- **void setPosition(uint8_t position, bool forced = false)** sets the wiper 
+to a position between 0 and 99. 
+The movement is relative to the current (cached) position.
+If forced is set to true, the wiper will be moved to the closest end position and 
+from there moved to the requested position. 
+The cached position is ignored and the new position will be cached. 
 - **uint8_t getPosition()** returns the current position.
 - **bool incr()** moves one position up (if possible). 
 Returns true if moved and false if already at end position.
@@ -78,6 +83,9 @@ Returns true if moved and false if already at end position.
 - **uint32_t getOhm()** returns the position expressed in Ohm.
 The returned value does depend on the value passed in the constructor.
 - **uint32_t getMaxOhm()** returns the maximum value ( =  parameter from constructor). 
+- **uint32_t Ohm2Position(uint32_t value, bool invert = false)**
+Calculates (with rounding) the position nearest to the requested value. 
+If **invert == true** it uses the other wiper end as reference.
 
 
 #### Store 
@@ -86,6 +94,8 @@ Warning: use with care.
 
 - **uint8_t store()** stores the current position in the NVRAM of the device, 
 and returns the current position so it can later be used as position parameter for **begin()**. 
+
+Note: this function blocks for 20 milliseconds.
 
 If one uses an incorrect parameter position in **begin()** the internal state and the device 
 will probably be out of sync. One way to sync is call **begin()** with the right parameters. 
@@ -156,10 +166,13 @@ Note: check datasheet for the range of the max voltage allowed.
 
 ## Future
 
+- update documentation
 - test different platforms
 - improve the hardcoded 500us delay in **begin()**
 - add error codes ?
-- test **store()**
+- add examples
+  - voltage divider
+- investigate and test **store()**
 - in the constructor rename **Ohm** parameter to value? 
   - The potentiometer can be used as a voltage divider (see above)
     so a better parameter name could be the anonymous **value**.

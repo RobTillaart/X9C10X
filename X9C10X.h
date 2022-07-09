@@ -2,14 +2,14 @@
 //
 //    FILE: X9C10X.h
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.1.3
+// VERSION: 0.2.0
 // PURPOSE: Arduino Library for X9C10X series digital potentiometer.
 //     URL: https://github.com/RobTillaart/X9C10X
 
 
 #include "Arduino.h"
 
-#define X9C10X_LIB_VERSION        (F("0.1.3"))
+#define X9C10X_LIB_VERSION        (F("0.2.0"))
 
 
 class X9C10X
@@ -35,10 +35,10 @@ public:
   uint8_t  store();
 
   //  current resistance in ohm.
-  //  Q: rounding needed?
-  uint32_t getOhm() { return (_maxOhm * _position + 49) / 99; };
-  // misc
-  uint32_t getMaxOhm() { return _maxOhm; };
+  uint32_t getOhm();
+  uint32_t getMaxOhm();
+  uint8_t  Ohm2Position(uint32_t value, bool invert = false);
+
 
   //  Q: needed?
   uint16_t getType() { return _type; };
