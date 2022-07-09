@@ -54,9 +54,9 @@ void X9C10X::begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin, ui
   digitalWrite(_pulsePin,     HIGH);
   digitalWrite(_directionPin, HIGH);
 
+  pinMode(_selectPin, OUTPUT);
   pinMode(_pulsePin, OUTPUT);
   pinMode(_directionPin, OUTPUT);
-  pinMode(_selectPin, OUTPUT);
 
   //  wiper power up time. Page 5.
   //  slightly more efficient than delayMicros()
