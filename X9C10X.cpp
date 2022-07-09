@@ -50,17 +50,16 @@ void X9C10X::begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin, ui
 
   //  #7 order of the initialization does matter
   //     as it might introduce an unwanted STORE pulse.  
-  pinMode(_selectPin, OUTPUT);
-  pinMode(_pulsePin, OUTPUT);
-  pinMode(_directionPin, OUTPUT);
-
   digitalWrite(_selectPin,    HIGH);
   digitalWrite(_pulsePin,     HIGH);
   digitalWrite(_directionPin, HIGH);
 
+  pinMode(_selectPin, OUTPUT);
+  pinMode(_pulsePin, OUTPUT);
+  pinMode(_directionPin, OUTPUT);
+
   //  wiper power up time. Page 5.
-  //  slightly more efficient than delayMicros()
-  while (micros() < 500);
+  delayMicroseconds(500);
 
   //  reset defined position.
   _position = position;
