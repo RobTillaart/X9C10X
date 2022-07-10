@@ -34,6 +34,8 @@ void setup()
   Serial.println();
   Serial.print("X9C10X_LIB_VERSION: ");
   Serial.println(X9C10X_LIB_VERSION);
+  Serial.println();
+  Serial.println(pot.getType());
 
   pot.begin(8, 9, 10);  //  pulse, direction, select
   pot.setPosition(0);   //  position

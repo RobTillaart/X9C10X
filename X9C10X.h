@@ -12,13 +12,43 @@
 #define X9C10X_LIB_VERSION        (F("0.2.0"))
 
 
-class X9C10X
+/////////////////////////////////////////////////////////
+//
+//  X9C MINIMAL BASE CLASS
+//
+class X9C
+{
+public:
+
+  X9C();
+
+  void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin);
+
+  //  step size 1.
+  bool     incr();
+  bool     decr();
+
+  //  use with care
+  void     store();
+
+protected:
+  uint8_t  _pulsePin;
+  uint8_t  _directionPin;
+  uint8_t  _selectPin;
+
+  void     _move(uint8_t direction, uint8_t steps = 1);
+};
+
+
+/////////////////////////////////////////////////////////
+//
+//  X9C10X BASE CLASS
+//
+class X9C10X : public X9C
 {
 public:
   //  ohm can be actual measured value e.g 9950 ohm (calibration)
   X9C10X(uint32_t maxOhm = 10000);
-
-  void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin);
 
   //  position = 0..99
   //  forced = true will ignore the cached position
@@ -39,27 +69,20 @@ public:
   uint32_t getMaxOhm();
   uint8_t  Ohm2Position(uint32_t value, bool invert = false);
 
-
-  //  Q: needed?
-  uint16_t getType() { return _type; };
+  //  returns 0 as it is unknown for X9C10X
+  uint16_t getType();
 
 
 protected:
-  uint8_t  _pulsePin;
-  uint8_t  _directionPin;
-  uint8_t  _selectPin;
-
-  uint32_t _maxOhm;
+  uint32_t _maxOhm   = 0;
   uint8_t  _position = 0;
   uint16_t _type     = 0;
-
-  void     _move(uint8_t direction, uint8_t steps = 1);
 };
 
 
 /////////////////////////////////////////////////////////
 //
-// DERIVED
+//  SPECIFIC DERIVED DEVICE CLASSES
 //
 class X9C102 : public X9C10X
 {
@@ -87,8 +110,6 @@ class X9C503 : public X9C10X
 public:
   X9C503(uint32_t ohm = 50000);
 };
-
-
 
 
 // -- END OF FILE --

@@ -36,15 +36,14 @@
 
 /////////////////////////////////////////////////////////
 //
-//  PUBLIC
+//  MINIMALISTIC BASE CLASS
 //
-X9C10X::X9C10X(uint32_t maxOhm)
+X9C::X9C()
 {
-  _maxOhm = maxOhm;
 }
 
 
-void X9C10X::begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin)
+void X9C::begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin)
 {
   _pulsePin     = pulsePin;
   _directionPin = directionPin;
@@ -63,6 +62,75 @@ void X9C10X::begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin)
 
   //  wiper power up time. Page 5.
   delayMicroseconds(500);
+}
+
+
+bool X9C::incr()
+{
+  _move(X9C10X_UP);
+  return true;
+}
+
+
+bool X9C::decr()
+{
+  _move(X9C10X_DOWN);
+  return true;
+}
+
+
+void X9C::store()
+{
+  //  _pulsePin starts default HIGH
+  digitalWrite(_selectPin, LOW);
+  #if X9C10X_DELAY_MICROS > 0
+  delayMicroseconds(X9C10X_DELAY_MICROS);
+  #endif
+  digitalWrite(_selectPin, HIGH);
+  delay(20);    //  Tcph  page 5
+}
+
+
+/////////////////////////////////////////////////////////
+//
+//  PROTECTED
+//
+void X9C::_move(uint8_t direction, uint8_t steps)
+{
+  digitalWrite(_directionPin, direction);
+  delayMicroseconds(3);  // Tdi  (page 5)
+
+  //  _pulsePin starts default HIGH
+  digitalWrite(_selectPin, LOW);
+  while (steps--)
+  {
+    digitalWrite(_pulsePin, HIGH);
+    #if X9C10X_DELAY_MICROS > 0
+    delayMicroseconds(X9C10X_DELAY_MICROS);
+    #endif
+
+    digitalWrite(_pulsePin, LOW);
+    #if X9C10X_DELAY_MICROS > 0
+    delayMicroseconds(X9C10X_DELAY_MICROS);
+    #endif
+  }
+  //  _pulsePin == LOW, (No Store, page 7)
+  digitalWrite(_selectPin, HIGH);
+  // reset _pulsePin to default.
+  digitalWrite(_pulsePin, HIGH);
+}
+
+
+
+
+
+/////////////////////////////////////////////////////////
+//
+//  X9C10X  BASE CLASS
+//
+X9C10X::X9C10X(uint32_t maxOhm) : X9C()
+{
+  _maxOhm = maxOhm;
 }
 
 
@@ -120,13 +188,7 @@ bool X9C10X::decr()
 
 uint8_t X9C10X::store()
 {
-  //  _pulsePin starts default HIGH
-  digitalWrite(_selectPin, LOW);
-  #if X9C10X_DELAY_MICROS > 0
-  delayMicroseconds(X9C10X_DELAY_MICROS);
-  #endif
-  digitalWrite(_selectPin, HIGH);
-  delay(20);    //  Tcph  page 5
+  X9C::store();
   return _position;
 }
 
@@ -154,40 +216,15 @@ uint8_t X9C10X::Ohm2Position(uint32_t value, bool invert)
 }
 
 
-/////////////////////////////////////////////////////////
-//
-//  PROTECTED
-//
-void X9C10X::_move(uint8_t direction, uint8_t steps)
+uint16_t X9C10X::getType()
 {
-  digitalWrite(_directionPin, direction);
-  delayMicroseconds(3);  // Tdi  (page 5)
-
-  //  _pulsePin starts default HIGH
-  digitalWrite(_selectPin, LOW);
-  while (steps--)
-  {
-    digitalWrite(_pulsePin, HIGH);
-    #if X9C10X_DELAY_MICROS > 0
-    delayMicroseconds(X9C10X_DELAY_MICROS);
-    #endif
-
-    digitalWrite(_pulsePin, LOW);
-    #if X9C10X_DELAY_MICROS > 0
-    delayMicroseconds(X9C10X_DELAY_MICROS);
-    #endif
-  }
-  //  _pulsePin == LOW, (No Store, page 7)
-  digitalWrite(_selectPin, HIGH);
-  // reset _pulsePin to default.
-  digitalWrite(_pulsePin, HIGH);
-}
-
+  return _type;
+};
 
 
 /////////////////////////////////////////////////////////
 //
-// DERIVED
+//  SPECIFIC DERIVED DEVICE CLASSES
 //
 X9C102::X9C102(uint32_t ohm) : X9C10X(ohm)
 {
