@@ -156,7 +156,7 @@ unittest(test_X9C10X_Ohm2Position)
   assertEqual(0, dp0.getPosition());
   assertEqual(1000, dp0.getMaxOhm());
 
-  for (uint8_t ohm = 0; ohm < 1000; ohm += 50)
+  for (uint16_t ohm = 0; ohm < 1000; ohm += 50)
   {
     fprintf(stderr, "OHM: %d Ω \tPOS: %d \tPOS: %d\n", ohm, 
                       dp0.Ohm2Position(ohm), dp0.Ohm2Position(ohm, true));
