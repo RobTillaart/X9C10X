@@ -28,7 +28,7 @@ four derived classes for specific digital potentiometer.
 
 _Note: Ω Ohm sign = ALT-234_
 
-The library keeps track of the position of the potentiometer,
+The X9C10X object keeps track of the position of the potentiometer,
 but the user should set it with **setPosition(pos, true);**
 Otherwise the library and device will probably not be in sync.
 
