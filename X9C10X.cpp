@@ -1,7 +1,7 @@
 //
 //    FILE: X9C10X.cpp
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.2.0
+// VERSION: 0.2.1
 // PURPOSE: Arduino Library for X9C10X series digital potentiometer.
 //     URL: https://github.com/RobTillaart/X9C10X
 //
@@ -17,6 +17,7 @@
 //                       to make setting position more explicit.
 //                     update readme
 //                     add uint8_t Ohm2Position()
+//  0.2.1  2022-07-23  fix #9 add restoreInternalPosition(pos)
 
 
 #include "X9C10X.h"
@@ -190,6 +191,12 @@ uint8_t X9C10X::store()
 {
   X9C::store();
   return _position;
+}
+
+
+void X9C10X::restoreInternalPosition(uint8_t position)
+{
+  _position = position;
 }
 
 

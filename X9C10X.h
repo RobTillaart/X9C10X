@@ -2,14 +2,14 @@
 //
 //    FILE: X9C10X.h
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.2.0
+// VERSION: 0.2.1
 // PURPOSE: Arduino Library for X9C10X series digital potentiometer.
 //     URL: https://github.com/RobTillaart/X9C10X
 
 
 #include "Arduino.h"
 
-#define X9C10X_LIB_VERSION        (F("0.2.0"))
+#define X9C10X_LIB_VERSION        (F("0.2.1"))
 
 
 /////////////////////////////////////////////////////////
@@ -63,6 +63,8 @@ public:
 
   //  use with care
   uint8_t  store();
+  //  note: restoreInternalPosition() is not available in X9C base class.
+  void     restoreInternalPosition(uint8_t position);
 
   //  current resistance in ohm.
   uint32_t getOhm();

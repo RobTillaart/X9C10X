@@ -79,13 +79,14 @@ quality can become an issue. (not investigated further)
 
 ## Interface
 
+```cpp
+#include "X9C10X.h"
+```
 
 ## X9C base class
 
 This is the most minimalistic base class. 
 It does not provide position information but that is sometimes enough.
-
-Use **\#include "X9C10X.h"**
 
 - **X9C()** Constructor.
 - **void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin)** 
@@ -101,8 +102,6 @@ So the user should keep track of the position if needed.
 ## X9C10X base class
 
 This class is derived from the X9C class but adds position, Ohm and type information.
-
-Use **\#include "X9C10X.h"**
 
 - **X9C10X(uint32_t Ohm = 10000)** Constructor, default initializes the resistance to 10000 Ω. 
 To calibrate one can fill in any other (measured) value e.g. 9950 Ω.
@@ -124,9 +123,17 @@ according to internal position math.
 Returns true if moved and false if already at begin position
 according to internal position math.
 - **uint8_t store()** stores the current position in the NVRAM of the device, 
-and returns the current position so it can later be used as position parameter for **setPosition()**.
-Warning: use with care (not tested).
-Note: **store()** blocks for 20 milliseconds.
+and returns the current position so it can later be used as position parameter 
+for **void setPosition()** or **void restoreInternalPosition()**.
+  - Warning: use with care (not tested).
+  - Note: **store()** blocks for 20 milliseconds.
+- **void restoreInternalPosition(uint8_t position)** hard overwrite of the current 
+(internal) position to initialize the library with the value returned by **store()**.
+The potentiometer will not be moved() in this process, and the user is responsible
+to provide the right value. 
+This function allows users e.g. to save the position returned by **store()** in EEPROM 
+to initialize the library with this EEPROM value after a reboot.
+  - Warning: use with care (not tested).
 
 Note: **begin()** changed in 0.2.0 as the implicit parameter position
 was removed for the explicit function call to **setPosition()**.
