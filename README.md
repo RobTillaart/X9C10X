@@ -140,7 +140,8 @@ was removed for the explicit function call to **setPosition()**.
 If **setPosition()** is not called, the device uses the last stored
 value as position. Unfortunately the position cannot be read from the device.
 This will result in a mismatch between the internal position and the 
-external one.
+external one. 
+Since 0.2.1 the function **void restoreInternalPosition(uint8_t position)** gives some means to solve this, see examples.
 
 
 #### Ohm
