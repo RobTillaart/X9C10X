@@ -15,9 +15,12 @@
 //  0.2.0  2022-07-09  fix #7 incorrect signal during initialize
 //                     remove position parameter from begin()
 //                       to make setting position more explicit.
-//                     update readme
+//                     update readme.md
 //                     add uint8_t Ohm2Position()
 //  0.2.1  2022-07-23  fix #9 add restoreInternalPosition(pos)
+//                     change return type setPosition() to indicate truncation
+//                     update readme.md and some comments
+
 
 
 #include "X9C10X.h"
