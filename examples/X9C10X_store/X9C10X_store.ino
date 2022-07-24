@@ -3,8 +3,13 @@
 //  AUTHOR: Rob Tillaart
 // PURPOSE: demo store
 
-//  note: AVR Arduino UNO only
-//        be aware the internal EEPROM can wear out !
+//    NOTE: AVR Arduino UNO only
+//          be aware the internal EEPROM can wear out !
+
+// WARNING: the restore mechanism demonstrated here will only work if the device
+//          has not moved since the last call to store() as in this example.
+//          It is the responsibility of the user to verify if that is the case.
+//
 
 
 #include "Arduino.h"
@@ -35,7 +40,7 @@
 X9C10X pot(12345);  //  100KΩ  (ALT-234)
 
 
-const uint8_t POT_ADDR = 0x10;
+const uint8_t POT_ADDR = 0x10;   //   for EEPROM
 
 
 void setup()
@@ -55,7 +60,7 @@ void setup()
   //  if EEPROM has no valid value or not been used (255).
   if (pos > 99)
   {
-    pot.setPosition(0, true);
+    pot.setPosition(0, true);   //  adjust to your needs.
   }
   else
   {
