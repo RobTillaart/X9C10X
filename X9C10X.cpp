@@ -26,6 +26,7 @@
 
 #include "X9C10X.h"
 
+
 //  minimum pulse width CLOCK = ? us (datasheet);
 //  digitalWrite takes enough time on UNO / AVR so clock_delay == 0
 //  Note that if clock pulses are long enough the data pulses are too.

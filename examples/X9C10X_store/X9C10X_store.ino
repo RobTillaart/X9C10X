@@ -4,7 +4,8 @@
 // PURPOSE: demo store
 
 //  note: AVR Arduino UNO only
-//        be aware the internal eeprom can wear out !
+//        be aware the internal EEPROM can wear out !
+
 
 #include "Arduino.h"
 #include "X9C10X.h"
@@ -20,9 +21,14 @@
 //  GND  | o    o |  Rwiper
 //       +--------+
 //
-//  INC   pulses
-//  U/D   UP = 1 DOWN = 0
-//  VCC   +5V
+//  INC     pulses
+//  U/D     UP = 1   DOWN = 0
+//  VCC     +5V
+//  GND     ground
+//  RH      resistor high end
+//  RL      resistor low end
+//  Rwiper  resistor wiper
+//  CS      chip select
 //
 
 
@@ -73,6 +79,7 @@ void loop()
         Serial.print("POS:\t");
         Serial.println(pot.getPosition());
         break;
+
       case '-' :
         pot.decr();
         Serial.print("POS:\t");
@@ -94,3 +101,4 @@ void loop()
 
 
 // -- END OF FILE --
+

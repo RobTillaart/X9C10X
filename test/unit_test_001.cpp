@@ -28,11 +28,11 @@
 #include "X9C10X.h"
 
 
-
 unittest_setup()
 {
   fprintf(stderr, "X9C10X_LIB_VERSION: %s\n", (char *) X9C10X_LIB_VERSION);
 }
+
 
 unittest_teardown()
 {

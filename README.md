@@ -13,8 +13,10 @@ Arduino Library for X9C10X series digital potentiometer.
 
 ## Description
 
-This **experimental** library provides a X9C base class, a X9C10X class and 
-four derived classes for specific digital potentiometer.
+This **experimental** library provides 
+- a minimal X9C base class, 
+- an elaborated X9C10X class and 
+- four derived classes for specific digital potentiometer.
 
 | class  | resistance | tested  |  notes       |
 |:------:|:----------:|:-------:|:-------------|
@@ -29,10 +31,12 @@ four derived classes for specific digital potentiometer.
 _Note: Ω Ohm sign = ALT-234_
 
 The X9C10X object keeps track of the position of the potentiometer,
-but the user should set it with **setPosition(pos, true);**
+but the user should set it with **setPosition(position, true);**
 Otherwise the library and device will probably not be in sync.
 
-Since 0.2.0 the library has a minimal X9C class. See below.
+Since 0.2.1 the library also supports **restoreInternalPosition(position)**
+to set the internal position with the value from the latest **store()** call.
+See the examples.
 
 
 ### Multiple devices
@@ -40,11 +44,12 @@ Since 0.2.0 the library has a minimal X9C class. See below.
 Multiple devices can be controlled by assigning them an unique selectPin (CS).
 This behaviour is similar to the SPI select pin.
 
-It should be possible to share the U/D and INC lines (not tested) when controlling  multiple X9C devices.
+It should be possible to share the U/D and INC lines (not tested) when controlling
+multiple X9C devices.
 
 Note: one should select one device at a time.
 Sharing a CS pin or sending pulses to multiple devices at the same time will
-cause the library and devices get oout of sync.
+cause the library and devices get out of sync.
 
 
 ### PINOUT
@@ -86,7 +91,7 @@ quality can become an issue. (not investigated further)
 ## X9C base class
 
 This is the most minimalistic base class. 
-It does not provide position information but that is sometimes enough.
+It does not provide position information but sometimes that is just enough.
 
 - **X9C()** Constructor.
 - **void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin)** 
@@ -96,12 +101,12 @@ Note: **begin()** has a hard coded 500uS delay so the device can wake up.
 - **void decr()** moves one position down (if possible).
 - **void store()** stores the current position in NV-RAM to be used at the next restart. 
 Does not return a value as the position cannot be read from the device.
-So the user should keep track of the position if needed.
+So the user must keep track of the position if needed.
 
 
 ## X9C10X base class
 
-This class is derived from the X9C class but adds position, Ohm and type information.
+This class is derived from the X9C class and adds position, Ohm and type information.
 
 - **X9C10X(uint32_t Ohm = 10000)** Constructor, default initializes the resistance to 10000 Ω. 
 To calibrate one can fill in any other (measured) value e.g. 9950 Ω.
@@ -144,7 +149,8 @@ If **setPosition()** is not called, the device uses the last stored
 value as position. Unfortunately the position cannot be read from the device.
 This will result in a mismatch between the internal position and the 
 external one. 
-Since 0.2.1 the function **uint8_t restoreInternalPosition(uint8_t position)** gives some means to solve this, see examples.
+Since 0.2.1 the function **uint8_t restoreInternalPosition(uint8_t position)** 
+gives some means to solve this, see examples.
 
 
 #### Ohm
@@ -202,6 +208,8 @@ X9C10X_LIB_VERSION: 0.1.2
 
 Time per step is 780 / 99 = ~8 us per step on an UNO.
 
+Note: no performance improvements since 0.1.2
+
 
 ## Operation
 
@@ -237,5 +245,5 @@ Note: check datasheet for the range of the max voltage and current allowed.
   - **getOhm()** ==> **getValue()**
   - **getMaxOhm()** ==> **getMaxValue()**
   - think milliVolt, ohm, lux, speed, etc. 
-    User can do this too with **getPosition() * factor**
+    User can do this too with **getPosition() \* factor**
 

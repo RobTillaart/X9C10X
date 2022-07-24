@@ -25,6 +25,7 @@ public:
   void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin);
 
   //  step size 1.
+  //  return false if end of range reached. 
   bool     incr();
   bool     decr();
 
