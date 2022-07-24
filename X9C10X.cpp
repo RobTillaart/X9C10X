@@ -19,7 +19,8 @@
 //                     add uint8_t Ohm2Position()
 //  0.2.1  2022-07-23  fix #9 add restoreInternalPosition(pos)
 //                     change return type setPosition() to indicate truncation
-//                     update readme.md and some comments
+//                     update readme.md and comments
+//                     update build-CI tests
 
 
 
@@ -36,6 +37,8 @@
 
 #define X9C10X_UP                   HIGH
 #define X9C10X_DOWN                 LOW
+
+#define X9C10X_MAXPOT               99
 
 
 /////////////////////////////////////////////////////////
@@ -126,8 +129,6 @@ void X9C::_move(uint8_t direction, uint8_t steps)
 
 
 
-
-
 /////////////////////////////////////////////////////////
 //
 //  X9C10X  BASE CLASS
@@ -144,11 +145,8 @@ uint8_t X9C10X::setPosition(uint8_t position, bool forced)
   {
     position = 99;
   }
-  //  reference 0.1.0
-  //  while (position > _position) incr();
-  //  while (position < _position) decr();
 
-  //  force to nearest end position first to minimize steps.
+  //  force to nearest end position first to minimize number of steps.
   if (forced)  
   {
     if (position < 50)

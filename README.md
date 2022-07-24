@@ -124,8 +124,8 @@ according to internal position math.
 - **bool decr()** moves one position down (if possible).
 Returns true if moved and false if already at begin position
 according to internal position math.
-- **uint8_t store()** stores the current position in the NVRAM of the device, 
-and returns the current position so it can later be used as position parameter 
+- **uint8_t store()** stores the current position in the NVRAM of the device. 
+Returns the current position so it can later be used as position parameter 
 for **void setPosition()** or **void restoreInternalPosition()**.
   - Warning: use with care (not tested).
   - Note: **store()** blocks for 20 milliseconds.

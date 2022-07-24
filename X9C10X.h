@@ -65,6 +65,7 @@ public:
   bool     decr();
 
   //  use with care
+  //  returns new position 0..99
   uint8_t  store();
   //  note: restoreInternalPosition() is not available in X9C base class.
   //  position = 0..99
