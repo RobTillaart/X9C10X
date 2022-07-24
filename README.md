@@ -109,12 +109,13 @@ This can be useful e.g. if one sets a fixed resistor parallel over the X9C one.
 - **void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin)** 
 sets the INC, UD and CS pins used by the device.  
 Note: **begin()** has a hard coded 500uS delay so the device can wake up.
-- **void setPosition(uint8_t position, bool forced = false)** sets the wiper 
+- **bool setPosition(uint8_t position, bool forced = false)** sets the wiper 
 to a position between 0 and 99. 
 The movement is relative to the current (internal) position.
 If forced is set to true, the wiper will be moved to the closest "end" position 
 and from there moved to the requested position. 
 The internal position is replaced by the new position. 
+Returns false if position is out of range => position will be set to 99.
 - **uint8_t getPosition()** returns the current (internal) position. 0..99
 - **bool incr()** moves one position up (if possible). 
 Returns true if moved and false if already at end position
@@ -127,10 +128,11 @@ and returns the current position so it can later be used as position parameter
 for **void setPosition()** or **void restoreInternalPosition()**.
   - Warning: use with care (not tested).
   - Note: **store()** blocks for 20 milliseconds.
-- **void restoreInternalPosition(uint8_t position)** hard overwrite of the current 
+- **bool restoreInternalPosition(uint8_t position)** hard overwrite of the current 
 (internal) position to initialize the library with the value returned by **store()**.
 The potentiometer will not be moved() in this process, and the user is responsible
 to provide the right value. 
+Returns false if position is out of range => position will be set to 99.
 This function allows users e.g. to save the position returned by **store()** in EEPROM 
 to initialize the library with this EEPROM value after a reboot.
   - Warning: use with care (not tested).
@@ -217,6 +219,7 @@ Note: check datasheet for the range of the max voltage and current allowed.
 ## Future
 
 - update documentation
+  - concept of **read()** => put 2 X9C parallel and read one with analogRead().
 - test different platforms
 - add error codes ?
 - add examples

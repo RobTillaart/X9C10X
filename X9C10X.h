@@ -54,7 +54,9 @@ public:
   //  forced = true will ignore the cached position
   //         takes up to 150 steps as one cannot read the position from device.
   //  forced = default false as that is safer and backwards compatible.
-  void     setPosition(uint8_t position, bool forced = false);
+  //  returns false if position was out of range
+  //                => position will be set to 99
+  bool     setPosition(uint8_t position, bool forced = false);
   uint8_t  getPosition() { return _position; };
 
   //  step size 1.
@@ -64,7 +66,9 @@ public:
   //  use with care
   uint8_t  store();
   //  note: restoreInternalPosition() is not available in X9C base class.
-  void     restoreInternalPosition(uint8_t position);
+  //  returns false if position was out of range
+  //                => position will be set to 99
+  bool     restoreInternalPosition(uint8_t position);
 
   //  current resistance in ohm.
   uint32_t getOhm();

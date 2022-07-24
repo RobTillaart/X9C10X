@@ -46,7 +46,15 @@ void setup()
 
   uint8_t pos = 0;
   EEPROM.get(POT_ADDR, pos);
-  pot.restoreInternalPosition(pos);
+  //  if EEPROM has no valid value or not been used (255).
+  if (pos > 99)
+  {
+    pot.setPosition(0, true);
+  }
+  else
+  {
+    pot.restoreInternalPosition(pos);
+  }
 
   Serial.print("RESTORE:\t");
   Serial.println(pot.getPosition());
