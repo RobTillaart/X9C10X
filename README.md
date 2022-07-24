@@ -131,7 +131,7 @@ Returns true if moved and false if already at begin position
 according to internal position math.
 - **uint8_t store()** stores the current position in the NVRAM of the device. 
 Returns the current position so it can later be used as position parameter 
-for **void setPosition()** or **void restoreInternalPosition()**.
+for **setPosition()** or **restoreInternalPosition()**.
   - Warning: use with care (not tested).
   - Note: **store()** blocks for 20 milliseconds.
 - **uint8_t restoreInternalPosition(uint8_t position)** hard overwrite of the current 
@@ -149,8 +149,13 @@ If **setPosition()** is not called, the device uses the last stored
 value as position. Unfortunately the position cannot be read from the device.
 This will result in a mismatch between the internal position and the 
 external one. 
+
 Since 0.2.1 the function **uint8_t restoreInternalPosition(uint8_t position)** 
 gives some means to solve this, see examples.
+Be aware that if a system resets and the position has been changed since last 
+**store()** the restore and therefore the library will not be in sync with the device. 
+To create a fool proof system additional hardware is needed, see Concept read position below.
+
 
 
 #### Ohm
@@ -223,6 +228,26 @@ Connect RL to GND and RH to +5V and you can do 5V in 100 steps of ~0.05V
 A voltage of **3V3** would be **setPosition(66)**. 
 
 Note: check datasheet for the range of the max voltage and current allowed.
+
+
+#### Concept read position 
+
+If you need to make a robust system with X9C devices you can solder two devices "in parallel".
+One to control whatever you need to control, and the other to create a feedback loop through analogRead().
+Lets name them feedback device and control device.
+The two devices should share the select, direction and pulse pins in hardware.
+This way they will get the exact same pulses and signals and would therefore be in the exact same position
+after initialization.
+
+The feedback device would be a voltage divider, splitting 5 Volts in 100 level.
+To read these levels you need at least an 8 bit ADC or better.
+This setup would allow you to read the position in the control device 100% of the time. 
+
+The price is at least twice as high in terms of hardware, the performance will be less at some times 
+and the code will be slightly more complex
+
+It might be possible to measure the voltage of the wiper of the control device.
+However that might not always be easy or possible, due to voltage used, etc.
 
 
 ## Future
