@@ -182,7 +182,7 @@ These classes have the same interface as the X9C10X base class.
 The only difference is that the type is set to a non zero value.
 
 
-#### Performance
+## Performance
 
 The table below is tested on a (relative slow) Arduino UNO 16 MHz with IDE 1.18.19.
 Other processors might give similar or faster times. See performance example.
