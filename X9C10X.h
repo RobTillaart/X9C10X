@@ -51,24 +51,26 @@ public:
   X9C10X(uint32_t maxOhm = 10000);
 
   //  position = 0..99
+  //             values > 99 are truncated.
   //  forced = true will ignore the cached position
-  //         takes up to 150 steps as one cannot read the position from device.
+  //           takes up to 150 steps as one cannot read the position from device.
   //  forced = default false as that is safer and backwards compatible.
-  //  returns false if position was out of range
-  //                => position will be set to 99
-  bool     setPosition(uint8_t position, bool forced = false);
+  //  returns new position 0..99
+  uint8_t  setPosition(uint8_t position, bool forced = false);
   uint8_t  getPosition() { return _position; };
 
   //  step size 1.
+  //  return false if end of range reached. 
   bool     incr();
   bool     decr();
 
   //  use with care
   uint8_t  store();
   //  note: restoreInternalPosition() is not available in X9C base class.
-  //  returns false if position was out of range
-  //                => position will be set to 99
-  bool     restoreInternalPosition(uint8_t position);
+  //  position = 0..99
+  //             values > 99 are truncated.
+  //  returns new position 0..99
+  uint8_t     restoreInternalPosition(uint8_t position);
 
   //  current resistance in ohm.
   uint32_t getOhm();

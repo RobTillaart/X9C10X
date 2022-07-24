@@ -135,13 +135,11 @@ X9C10X::X9C10X(uint32_t maxOhm) : X9C()
 }
 
 
-bool X9C10X::setPosition(uint8_t position, bool forced)
+uint8_t X9C10X::setPosition(uint8_t position, bool forced)
 {
-  bool rv = true;
   if (position > 99)
   {
     position = 99;
-    rv = false;
   }
   //  reference 0.1.0
   //  while (position > _position) incr();
@@ -171,7 +169,7 @@ bool X9C10X::setPosition(uint8_t position, bool forced)
   }
 
   _position = position;
-  return rv;
+  return _position;
 }
 
 
@@ -200,15 +198,14 @@ uint8_t X9C10X::store()
 }
 
 
-bool X9C10X::restoreInternalPosition(uint8_t position)
+uint8_t X9C10X::restoreInternalPosition(uint8_t position)
 {
   if (position > 99)
   {
     position = 99;
-    return false;
   }
   _position = position;
-  return true;
+  return _position;
 }
 
 

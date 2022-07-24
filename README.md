@@ -109,13 +109,14 @@ This can be useful e.g. if one sets a fixed resistor parallel over the X9C one.
 - **void begin(uint8_t pulsePin, uint8_t directionPin, uint8_t selectPin)** 
 sets the INC, UD and CS pins used by the device.  
 Note: **begin()** has a hard coded 500uS delay so the device can wake up.
-- **bool setPosition(uint8_t position, bool forced = false)** sets the wiper 
+- **uint8_t setPosition(uint8_t position, bool forced = false)** sets the wiper 
 to a position between 0 and 99. 
 The movement is relative to the current (internal) position.
 If forced is set to true, the wiper will be moved to the closest "end" position 
 and from there moved to the requested position. 
-The internal position is replaced by the new position. 
-Returns false if position is out of range => position will be set to 99.
+The internal position is replaced by the new position.
+If the new position > 99 the new position is truncated to 99.
+Returns new position 0 .. 99.
 - **uint8_t getPosition()** returns the current (internal) position. 0..99
 - **bool incr()** moves one position up (if possible). 
 Returns true if moved and false if already at end position
@@ -128,11 +129,11 @@ and returns the current position so it can later be used as position parameter
 for **void setPosition()** or **void restoreInternalPosition()**.
   - Warning: use with care (not tested).
   - Note: **store()** blocks for 20 milliseconds.
-- **bool restoreInternalPosition(uint8_t position)** hard overwrite of the current 
+- **uint8_t restoreInternalPosition(uint8_t position)** hard overwrite of the current 
 (internal) position to initialize the library with the value returned by **store()**.
 The potentiometer will not be moved() in this process, and the user is responsible
 to provide the right value. 
-Returns false if position is out of range => position will be set to 99.
+Returns new position 0 .. 99.
 This function allows users e.g. to save the position returned by **store()** in EEPROM 
 to initialize the library with this EEPROM value after a reboot.
   - Warning: use with care (not tested).
@@ -143,7 +144,7 @@ If **setPosition()** is not called, the device uses the last stored
 value as position. Unfortunately the position cannot be read from the device.
 This will result in a mismatch between the internal position and the 
 external one. 
-Since 0.2.1 the function **void restoreInternalPosition(uint8_t position)** gives some means to solve this, see examples.
+Since 0.2.1 the function **uint8_t restoreInternalPosition(uint8_t position)** gives some means to solve this, see examples.
 
 
 #### Ohm
